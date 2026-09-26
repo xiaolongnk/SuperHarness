@@ -1,0 +1,51 @@
+# Local state — SuperHarness itself ships no runnable engine, but if you bring
+# your own orchestration tooling and it happens to write state under
+# $SUPERHARNESS_HOME (default $HOME/.SuperHarness) inside this repo (e.g. for a
+# local demo), that runtime dir and any status/log files should not be committed.
+.SuperHarness/
+*.log
+
+# Scratch space — screenshots, traces, captured pane tails, ad-hoc smoke
+# scripts. Lives at the repo root by convention; should never be tracked.
+tmp/
+
+# Editor + tooling cruft
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Secrets — never commit environment files
+.env
+.env.*
+
+# OS cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Backup files left by editors / sed -i
+*.bak
+*.orig
+
+# Python tooling (only relevant if a contributor adds a helper script)
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+
+# Node tooling (same — only if someone adds a small JS helper)
+node_modules/
+.npm/
+
+# Runtime — artifacts and transient isolation, NOT the example project code/READMEs.
+# The framework ships small tracked example projects under runtime/{personal,work}/code/
+# to make `route` / `portfolio-triage` runnable out of the box (see runtime/README.md);
+# your own runtime projects are independent repos kept out of this history entirely by
+# never being added here in the first place. Only generated/transient state is ignored:
+runtime/**/data/*
+!runtime/**/data/.gitkeep
+runtime/worktree/*
+!runtime/worktree/README.md

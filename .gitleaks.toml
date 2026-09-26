@@ -1,0 +1,6 @@
+# Secret scan for this repo. Runs in CI on every push (see .github/workflows/leak-scan.yml).
+# Uses gitleaks' default ruleset (AWS keys, GitHub/Slack tokens, private keys, etc.).
+title = "SuperHarness secret scan"
+
+[extend]
+useDefault = true
