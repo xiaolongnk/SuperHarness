@@ -57,9 +57,8 @@ SessionStart hook that makes "always-loaded" literally true; `check` turns the f
 tax metric and the registry ⇄ agents ⇄ boards invariant into an exit code. `npm test` proves
 each gate can go red. Not yet published to npm — see "Remaining before owner go".
 
-**Repo: Private / draft — awaiting owner go for public release.** No publish
-step has occurred. Owner reviews all content and signs off before the repo is
-shared or announced.
+**Repo: PUBLIC since 2026-09-26** (owner go, after gitleaks + private-word scan on the
+squashed history). npm publish of `create-superharness` is the remaining release step.
 
 ## Content completion (post-reshape)
 
@@ -97,8 +96,8 @@ table as a structural checklist, not a fidelity claim.
       exemplar skills) merged
 - [x] CLI + npm packaging (`package.json`, `bin/`, `src/`, `test/`)
 - [ ] `npm publish` as `create-superharness` (`superharness` is taken on npm by an unrelated project) so `npm create superharness` works
-- [ ] Owner reads full repo for any residual private/work/knowledge leak
-- [ ] Owner approves publish target (GitHub, GitLab, or a self-hosted host)
+- [x] Owner reads full repo for any residual private/work/knowledge leak (scans clean; owner go 2026-09-26)
+- [x] Owner approves publish target — GitHub
 - [ ] Owner confirms license choices (MIT + CC BY 4.0 already encoded)
-- [ ] Public repo created and content pushed
+- [x] Public repo created and content pushed (github.com/xiaolongnk/SuperHarness)
 - [ ] Announcement copy drafted (HN / community channels)
