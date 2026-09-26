@@ -72,7 +72,8 @@ my-hub/
 
 **2. 只守一个数字：always-loaded 税。** 每一层——disciplines、skills、memory、knowledge、
 任务状态——都拆成"每次会话都加载的小索引"和"命中才加载的库"。库可以无限长，索引必须
-持平或下降。`superharness check` 负责度量。新增第 30 个项目，对第 1 个项目的会话成本为零。
+持平或下降。`superharness check` 负责度量。新增第 30 个项目，对第 1 个项目的会话成本只有
+路由索引里的一行（约 90 字节），别无其它——实测数据见 `test/behavioral.sh`。
 → [`docs/architecture.md`](docs/architecture.md)
 
 **3. 一个把失败灌进库的环路。** 纠正 → `skills/learn` 把教训路由到正确的层 → `skills/curate`
@@ -102,7 +103,8 @@ SuperHarness 是*管理层*：registry、disciplines、skills、memory、任务�
 ## 开发
 
 ```sh
-npm test      # 在临时目录生成 harness，逐个破坏不变量，证明 `check` 会变红
+npm test                 # 从打包的 tarball 生成 harness，逐个破坏不变量，证明 `check` 会变红
+sh test/behavioral.sh    # 在生成的 harness 里跑真实的 `claude -p`，检验 README 的宣称是否成立（消耗 token）
 ```
 
 Clean-room 约束：没有真实项目名、主机、凭证或私有知识——由 CI 里的 `.gitleaks.toml`

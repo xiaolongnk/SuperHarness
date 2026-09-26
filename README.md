@@ -77,7 +77,8 @@ never a per-task judgment call. → [`docs/portfolio.md`](docs/portfolio.md)
 memory, knowledge, task state — is split into a small index that loads every session and a
 library that loads only on match. The library may grow without limit; the index must trend
 flat or down. `superharness check` measures it. Adding project #30 costs a session on
-project #1 nothing. → [`docs/architecture.md`](docs/architecture.md)
+project #1 one routing-index line (~90 bytes) and nothing else — measured, see
+`test/behavioral.sh`. → [`docs/architecture.md`](docs/architecture.md)
 
 **3. A loop that fills the library from failures.** Correction → `skills/learn` routes the
 lesson to the right layer → `skills/curate` sediments what stopped earning its always-loaded
@@ -110,7 +111,8 @@ bring-your-own.
 ## Development
 
 ```sh
-npm test      # scaffolds into a temp dir, breaks each invariant, proves `check` goes red
+npm test                 # scaffolds from the packed tarball, breaks each invariant, proves `check` goes red
+sh test/behavioral.sh    # runs a real `claude -p` in a scaffold and checks the README's claims hold (costs tokens)
 ```
 
 Clean-room invariant: no real project names, hosts, credentials, or private knowledge —

@@ -76,8 +76,9 @@ the library inside the part everyone pays for on every task.
 The concrete test: **what does adding project #30, skill #110, or knowledge
 entry #700 cost an agent working on project #1?**
 
-Under the layered model, the answer is zero. Project #30 gets its own memory
-cluster and task board, entered in the routing index as one line. Skill #110
+Under the layered model, the answer is one line. Project #30 gets its own memory
+cluster and task board, entered in the routing index as one line (~90 bytes —
+the only always-loaded cost it adds; measured in `test/behavioral.sh`). Skill #110
 gets its own `SKILL.md` with a `domains:` tag, entered in `skills/README.md`
 as one row. Knowledge entry #700 lives under `knowledge/<category>/`, entered
 in that category's index as one line. None of that content loads into an
@@ -87,7 +88,8 @@ not move.
 
 Compare the alternative: a framework that concatenates everything relevant
 into one big prompt as the portfolio grows. That model's cost is
-`O(portfolio size)` per task. The layered model's cost is `O(1)` per task —
+`O(portfolio size)` per task. The layered model's cost is a constant plus one
+index line per project —
 bounded by the always-loaded core, independent of how much has accumulated in
 the on-demand library. This is the entire argument for treating the tax, not
 the library size, as the metric to defend. See

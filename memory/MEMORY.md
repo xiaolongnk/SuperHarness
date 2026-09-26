@@ -15,7 +15,8 @@
 | `acme-api` | (fill in) | [cluster](clusters/acme-api.md) | [board](../docs/tasks/acme-api.md) |
 <!-- projects:end -->
 
-**Routing rule:** incoming task → match a project above → load its cluster + board, then work.
+**Routing rule:** incoming task → match a project above → read its task board FIRST (what's in
+flight), then its cluster (what was learned), then work.
 Unknown task (no clear owner) → `docs/portfolio-registry.md` via `skills/route`.
 
 ## Critical always-on rules
