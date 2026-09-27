@@ -3,9 +3,14 @@
   "version": "0.1.0",
   "description": "Scaffold and maintain an agent-harness repo: portfolio registry, layered disciplines, on-demand skills, two-layer memory, and a self-improvement loop \u2014 for people running many projects with AI coding agents.",
   "license": "MIT",
+  "author": "xiaolongnk (https://github.com/xiaolongnk)",
+  "homepage": "https://github.com/xiaolongnk/SuperHarness#readme",
+  "bugs": {
+    "url": "https://github.com/xiaolongnk/SuperHarness/issues"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/xiaolongnk/SuperHarness"
+    "url": "git+https://github.com/xiaolongnk/SuperHarness.git"
   },
   "bin": {
     "create-superharness": "bin/superharness.js",
@@ -36,7 +41,8 @@
   },
   "scripts": {
     "test": "node test/run.js",
-    "test:behavioral": "sh test/behavioral.sh"
+    "test:behavioral": "sh test/behavioral.sh",
+    "prepublishOnly": "npm test"
   },
   "keywords": [
     "claude-code",

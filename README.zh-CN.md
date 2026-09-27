@@ -100,11 +100,25 @@ SuperHarness 是*管理层*：registry、disciplines、skills、memory、任务�
 一致的 CLI。它不负责生成或监督 agent 进程——跑一个会话还是二十个，结构不变。多 agent
 编排自带。
 
+## 从源码克隆直接试用
+
+尚未发布到 npm——在此之前，直接从仓库运行 CLI：
+
+```sh
+git clone https://github.com/xiaolongnk/SuperHarness && cd SuperHarness
+node bin/superharness.js init ../my-hub     # 在克隆旁边生成 harness
+# 或者在评估期间把命令全局暴露出来：
+npm link                                    # 把 `superharness` 和 `create-superharness` 加进 PATH
+superharness init ../my-hub && cd ../my-hub && superharness check
+npm unlink -g create-superharness           # 用完解除
+```
+
 ## 开发
 
 ```sh
 npm test                 # 从打包的 tarball 生成 harness，逐个破坏不变量，证明 `check` 会变红
 sh test/behavioral.sh    # 在生成的 harness 里跑真实的 `claude -p`，检验 README 的宣称是否成立（消耗 token）
+npm pack --dry-run       # 查看 npm publish 会发布哪些文件
 ```
 
 Clean-room 约束：没有真实项目名、主机、凭证或私有知识——由 CI 里的 `.gitleaks.toml`

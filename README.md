@@ -108,11 +108,25 @@ and the CLI that keeps them consistent. It does not spawn or supervise agent pro
 one session or twenty, the structure is the same. Multi-agent orchestration is
 bring-your-own.
 
+## Trying it from a clone
+
+Not on npm yet — until it is, run the CLI straight from the repo:
+
+```sh
+git clone https://github.com/xiaolongnk/SuperHarness && cd SuperHarness
+node bin/superharness.js init ../my-hub     # scaffold next to the clone
+# or expose the commands globally while you evaluate:
+npm link                                    # adds `superharness` + `create-superharness` to PATH
+superharness init ../my-hub && cd ../my-hub && superharness check
+npm unlink -g create-superharness           # when done
+```
+
 ## Development
 
 ```sh
 npm test                 # scaffolds from the packed tarball, breaks each invariant, proves `check` goes red
 sh test/behavioral.sh    # runs a real `claude -p` in a scaffold and checks the README's claims hold (costs tokens)
+npm pack --dry-run       # what an npm publish would ship
 ```
 
 Clean-room invariant: no real project names, hosts, credentials, or private knowledge —
