@@ -19,9 +19,9 @@ const tgz = fs.readdirSync(tmp).find((f) => f.endsWith('.tgz'));
 execFileSync('npm', ['i', '-g', '--prefix', path.join(tmp, 'prefix'), path.join(tmp, tgz), '--silent'], { stdio: 'ignore' });
 const BIN = path.join(tmp, 'prefix/bin/superharness');
 
-function run(args, { cwd = tmp, expectFail = false } = {}) {
+function run(args, { cwd = tmp, expectFail = false, env = {} } = {}) {
   try {
-    const out = execFileSync('node', [BIN, ...args], { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+    const out = execFileSync('node', [BIN, ...args], { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], env: { ...process.env, ...env } });
     assert(!expectFail, `expected failure for: ${args.join(' ')}\n${out}`);
     return out;
   } catch (e) {
@@ -57,11 +57,32 @@ test('init --with-examples ships the example projects from the tarball', () => {
   assert(run(['check'], { cwd: path.join(tmp, 'ex') }).includes('3 project(s)'), 'examples should register 3 projects');
 });
 
+// Git identity is supplied explicitly: CI runners and fresh machines have none configured,
+// and init must not invent one — it skips the commit and says so (second half of this test).
+const GIT_ID = {
+  GIT_AUTHOR_NAME: 'superharness-test', GIT_AUTHOR_EMAIL: 'test@example.invalid',
+  GIT_COMMITTER_NAME: 'superharness-test', GIT_COMMITTER_EMAIL: 'test@example.invalid',
+};
+// useConfigOnly stops git guessing an identity from the machine's hostname, so this is
+// deterministic on any box.
+const NO_GIT_ID = {
+  GIT_CONFIG_GLOBAL: os.devNull, GIT_CONFIG_NOSYSTEM: '1',
+  GIT_CONFIG_COUNT: '1', GIT_CONFIG_KEY_0: 'user.useConfigOnly', GIT_CONFIG_VALUE_0: 'true',
+};
+
 test('init makes an initial commit when git is available', () => {
-  run(['init', 'g']);
+  run(['init', 'g'], { env: GIT_ID });
   const log = execFileSync('git', ['log', '--oneline'], { cwd: path.join(tmp, 'g'), encoding: 'utf8' });
   assert(log.includes('superharness init'), 'no initial commit');
   assert.strictEqual(execFileSync('git', ['status', '--short'], { cwd: path.join(tmp, 'g'), encoding: 'utf8' }), '', 'dirty tree after init');
+});
+
+test('init without a git identity still scaffolds, and says the commit was skipped', () => {
+  const out = run(['init', 'g2'], { env: NO_GIT_ID });
+  assert(fs.existsSync(path.join(tmp, 'g2/.git')), 'repo not initialised');
+  assert(out.includes('initial commit (configure git user.name/user.email'), out);
+  const commits = execFileSync('git', ['rev-list', '--all', '--count'], { cwd: path.join(tmp, 'g2'), encoding: 'utf8' }).trim();
+  assert.strictEqual(commits, '0', 'a commit was made without an identity');
 });
 
 test('init is idempotent on an adopted repo', () => {
